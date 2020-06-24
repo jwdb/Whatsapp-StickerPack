@@ -10,13 +10,13 @@ namespace nl.datm.yuuta
 {
     public partial class App : Application
     {
-
         public App()
         {
             var assetString = "nl.datm.yuuta.Assets";
             var assembly = Assembly.GetExecutingAssembly();
-            Stream stream = assembly.GetManifestResourceStream($"{assetString}.contents.json");
             string text = "";
+
+            using (Stream stream = assembly.GetManifestResourceStream($"{assetString}.contents.json"))
             using (var reader = new StreamReader(stream))
             {
                 text = reader.ReadToEnd();

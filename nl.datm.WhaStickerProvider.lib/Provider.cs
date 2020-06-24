@@ -10,9 +10,12 @@ namespace nl.datm.WhaStickerProvider.lib
 {
     public static class Provider
     {
+        private static List<(string name, string identifier)> _stickerPacks = null;
         public static void Init(Assembly resourceAssembly, StickerContentJson sContent, string assetString)
         {
             var stickers = new List<StickerPack>();
+            if (_stickerPacks == null)
+                _stickerPacks = new List<(string name, string identifier)>();
 
             foreach (var stickerPack in sContent.sticker_packs)
             {
@@ -35,7 +38,7 @@ namespace nl.datm.WhaStickerProvider.lib
                     return stickImage;
                 })
                 )).ToList();
-
+                _stickerPacks.Add((stickerPack.name, stickerPack.identifier));
                 stickers.Add(new StickerPack(stickerPack, trayImage, stickerSource));
             }
 
@@ -44,6 +47,11 @@ namespace nl.datm.WhaStickerProvider.lib
 
         public static void AddStickerPackToWhatsApp(string identifier, string stickerPackName) {
             DependencyService.Get<AddStickerService>().AddStickerPackToWhatsApp(identifier, stickerPackName);
+        }
+
+        public static List<(string name, string identifier)> GetStickerPacks()
+        {
+            return _stickerPacks;
         }
     }
 }

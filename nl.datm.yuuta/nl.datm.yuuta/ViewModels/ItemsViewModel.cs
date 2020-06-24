@@ -7,6 +7,7 @@ using Xamarin.Forms;
 
 using nl.datm.yuuta.Models;
 using nl.datm.yuuta.Views;
+using nl.datm.WhaStickerProvider.lib;
 
 namespace nl.datm.yuuta.ViewModels
 {
@@ -15,17 +16,22 @@ namespace nl.datm.yuuta.ViewModels
         public ObservableCollection<Item> Items { get; set; }
         public Command LoadItemsCommand { get; set; }
 
+        public Item SelectedItem { get; set; }
+
+        public Command SelectChangedCommand { get; set; }
+
         public ItemsViewModel()
         {
             Title = "Browse";
             Items = new ObservableCollection<Item>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
-
-            MessagingCenter.Subscribe<NewItemPage, Item>(this, "AddItem", async (obj, item) =>
+            SelectChangedCommand = new Command(() =>
             {
-                var newItem = item as Item;
-                Items.Add(newItem);
-                await DataStore.AddItemAsync(newItem);
+                if (SelectedItem != null)
+                    Provider.AddStickerPackToWhatsApp(SelectedItem.Id, SelectedItem.Text);
+
+                SelectedItem = null;
+                this.OnPropertyChanged(nameof(SelectedItem));
             });
         }
 
@@ -36,10 +42,15 @@ namespace nl.datm.yuuta.ViewModels
             try
             {
                 Items.Clear();
-                var items = await DataStore.GetItemsAsync(true);
+                var items = Provider.GetStickerPacks();
                 foreach (var item in items)
                 {
-                    Items.Add(item);
+                    Items.Add(new Item()
+                    {
+                        Id = item.identifier,
+                        Text = item.name,
+                        Description = ""
+                    });
                 }
             }
             catch (Exception ex)
