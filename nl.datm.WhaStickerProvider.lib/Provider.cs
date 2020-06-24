@@ -36,7 +36,7 @@ namespace nl.datm.WhaStickerProvider.lib
                 })
                 )).ToList();
 
-                stickers.Add(new StickerPack(stickerPack.identifier, stickerPack.name, stickerPack.tray_image_file, trayImage, stickerSource));
+                stickers.Add(new StickerPack(stickerPack, trayImage, stickerSource));
             }
 
             DependencyService.Get<AddStickerService>().SetStickerResolver(stickers);

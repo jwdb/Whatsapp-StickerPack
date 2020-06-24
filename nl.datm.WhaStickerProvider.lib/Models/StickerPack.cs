@@ -21,18 +21,19 @@ namespace nl.datm.WhaStickerProvider.lib.Models
         public byte[] trayImage { get; set; }
         public List<Sticker> Stickers { get; set; }
 
-        public StickerPack(string identifier, string name, string trayImageFile, byte[] trayImage, List<Sticker> resolveSticker)
+        public StickerPack(StickerContentJson.Sticker_Packs jsonPack, byte[] trayImage, List<Sticker> resolveSticker)
         {
-            this.identifier = identifier;
-            this.name = name;
-            this.publisher = "Jan-Willem de Bruyn";
-            this.trayImageFile = trayImageFile;
-            this.publisherEmail = "a@b.nl";
-            this.publisherWebsite = "datm.nl";
-            this.privacyPolicyWebsite = "datm.nl";
-            this.licenseAgreementWebsite = "datm.nl";
-            this.imageDataVersion = "1";
-            this.avoidCache = false;
+            identifier = jsonPack.identifier;
+            name = jsonPack.name;
+            publisher = jsonPack.publisher;
+            trayImageFile = jsonPack.tray_image_file;
+            publisherEmail = jsonPack.publisher_email;
+            publisherWebsite = jsonPack.publisher_website;
+            privacyPolicyWebsite = jsonPack.privacy_policy_website;
+            licenseAgreementWebsite = jsonPack.license_agreement_website;
+            imageDataVersion = jsonPack.image_data_version;
+            avoidCache = jsonPack.avoid_cache;
+
             Stickers = resolveSticker;
             this.trayImage = trayImage;
         }
