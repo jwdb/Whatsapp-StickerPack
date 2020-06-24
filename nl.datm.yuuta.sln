@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nl.datm.yuuta.Android", "nl.datm.yuuta\nl.datm.yuuta.Android\nl.datm.yuuta.Android.csproj", "{07F4EA6D-59CE-4524-8605-7504B93B8019}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nl.datm.yuuta", "nl.datm.yuuta\nl.datm.yuuta\nl.datm.yuuta.csproj", "{71D193FE-E862-4EDF-B5E7-372B6D978E0A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{07F4EA6D-59CE-4524-8605-7504B93B8019}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07F4EA6D-59CE-4524-8605-7504B93B8019}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07F4EA6D-59CE-4524-8605-7504B93B8019}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{07F4EA6D-59CE-4524-8605-7504B93B8019}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07F4EA6D-59CE-4524-8605-7504B93B8019}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07F4EA6D-59CE-4524-8605-7504B93B8019}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{71D193FE-E862-4EDF-B5E7-372B6D978E0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71D193FE-E862-4EDF-B5E7-372B6D978E0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71D193FE-E862-4EDF-B5E7-372B6D978E0A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{71D193FE-E862-4EDF-B5E7-372B6D978E0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71D193FE-E862-4EDF-B5E7-372B6D978E0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71D193FE-E862-4EDF-B5E7-372B6D978E0A}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0A56C715-316F-4015-AAE4-4EA709A08F7A}
+	EndGlobalSection
+EndGlobal
