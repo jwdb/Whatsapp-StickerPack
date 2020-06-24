@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using Android.Content;
 using Android.Widget;
 using nl.datm.yuuta.Droid;
@@ -16,9 +16,22 @@ namespace nl.datm.yuuta.Droid
         public const string EXTRA_STICKER_PACK_NAME = "sticker_pack_name";
         private Context _context;
 
+
+        public Dictionary<(string identifier, string name, string trayImageFile, byte[] trayImage), Dictionary<(string name, string[] emoji), Func<byte[]>>> StickerResolver { get; set; }
+
         public AddSticker()
         {
             _context = Android.App.Application.Context;
+        }
+
+        public void SetStickerResolver(Dictionary<(string identifier, string name, string trayImageFile, byte[] trayImage), Dictionary<(string name, string[] emoji), Func<byte[]>>> stickerResolver)
+        {
+            StickerResolver = stickerResolver;
+        }
+
+        public Dictionary<(string identifier, string name, string trayImageFile, byte[] trayImage), Dictionary<(string name, string[] emoji), Func<byte[]>>> GetStickerResolver()
+        {
+            return StickerResolver;
         }
 
         public void AddStickerPackToWhatsApp(String identifier, String stickerPackName)

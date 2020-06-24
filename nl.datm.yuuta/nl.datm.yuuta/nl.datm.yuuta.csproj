@@ -11,7 +11,83 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\1\01_Cuppy_smile.webp" />
+    <None Remove="Assets\1\02_Cuppy_lol.webp" />
+    <None Remove="Assets\1\03_Cuppy_rofl.webp" />
+    <None Remove="Assets\1\04_Cuppy_sad.webp" />
+    <None Remove="Assets\1\05_Cuppy_cry.webp" />
+    <None Remove="Assets\1\06_Cuppy_love.webp" />
+    <None Remove="Assets\1\07_Cuppy_hate.webp" />
+    <None Remove="Assets\1\08_Cuppy_lovewithmug.webp" />
+    <None Remove="Assets\1\09_Cuppy_lovewithcookie.webp" />
+    <None Remove="Assets\1\10_Cuppy_hmm.webp" />
+    <None Remove="Assets\1\11_Cuppy_upset.webp" />
+    <None Remove="Assets\1\12_Cuppy_angry.webp" />
+    <None Remove="Assets\1\13_Cuppy_curious.webp" />
+    <None Remove="Assets\1\14_Cuppy_weird.webp" />
+    <None Remove="Assets\1\15_Cuppy_bluescreen.webp" />
+    <None Remove="Assets\1\16_Cuppy_angry.webp" />
+    <None Remove="Assets\1\17_Cuppy_tired.webp" />
+    <None Remove="Assets\1\18_Cuppy_workhard.webp" />
+    <None Remove="Assets\1\19_Cuppy_shine.webp" />
+    <None Remove="Assets\1\20_Cuppy_disgusting.webp" />
+    <None Remove="Assets\1\21_Cuppy_hi.webp" />
+    <None Remove="Assets\1\22_Cuppy_bye.webp" />
+    <None Remove="Assets\1\23_Cuppy_greentea.webp" />
+    <None Remove="Assets\1\24_Cuppy_phone.webp" />
+    <None Remove="Assets\1\25_Cuppy_battery.webp" />
+    <None Remove="Assets\1\tray_Cuppy.png" />
+    <None Remove="Assets\contents.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\1\01_Cuppy_smile.webp" />
+    <EmbeddedResource Include="Assets\1\02_Cuppy_lol.webp" />
+    <EmbeddedResource Include="Assets\1\03_Cuppy_rofl.webp" />
+    <EmbeddedResource Include="Assets\1\04_Cuppy_sad.webp" />
+    <EmbeddedResource Include="Assets\1\05_Cuppy_cry.webp" />
+    <EmbeddedResource Include="Assets\1\06_Cuppy_love.webp" />
+    <EmbeddedResource Include="Assets\1\07_Cuppy_hate.webp" />
+    <EmbeddedResource Include="Assets\1\08_Cuppy_lovewithmug.webp" />
+    <EmbeddedResource Include="Assets\1\09_Cuppy_lovewithcookie.webp" />
+    <EmbeddedResource Include="Assets\1\10_Cuppy_hmm.webp" />
+    <EmbeddedResource Include="Assets\1\11_Cuppy_upset.webp" />
+    <EmbeddedResource Include="Assets\1\12_Cuppy_angry.webp" />
+    <EmbeddedResource Include="Assets\1\13_Cuppy_curious.webp" />
+    <EmbeddedResource Include="Assets\1\14_Cuppy_weird.webp" />
+    <EmbeddedResource Include="Assets\1\15_Cuppy_bluescreen.webp" />
+    <EmbeddedResource Include="Assets\1\16_Cuppy_angry.webp" />
+    <EmbeddedResource Include="Assets\1\17_Cuppy_tired.webp" />
+    <EmbeddedResource Include="Assets\1\18_Cuppy_workhard.webp" />
+    <EmbeddedResource Include="Assets\1\19_Cuppy_shine.webp" />
+    <EmbeddedResource Include="Assets\1\20_Cuppy_disgusting.webp" />
+    <EmbeddedResource Include="Assets\1\21_Cuppy_hi.webp" />
+    <EmbeddedResource Include="Assets\1\22_Cuppy_bye.webp" />
+    <EmbeddedResource Include="Assets\1\23_Cuppy_greentea.webp" />
+    <EmbeddedResource Include="Assets\1\24_Cuppy_phone.webp" />
+    <EmbeddedResource Include="Assets\1\25_Cuppy_battery.webp" />
+    <EmbeddedResource Include="Assets\1\tray_Cuppy.png" />
+    <EmbeddedResource Include="Assets\contents.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Xamarin.Forms" Version="4.5.0.495" />  
     <PackageReference Include="Xamarin.Essentials" Version="1.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

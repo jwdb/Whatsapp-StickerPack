@@ -31,6 +31,10 @@ namespace nl.datm.yuuta.Droid
         internal String androidPlayStoreLink;
         private bool isWhitelisted;
 
+        internal byte[] trayImage;
+
+        private Dictionary<(string name, string[] emoji), Func<byte[]>> _resolveSticker;
+
         internal StickerPack(String identifier, String name, String publisher, String trayImageFile, String publisherEmail, String publisherWebsite, String privacyPolicyWebsite, String licenseAgreementWebsite, String imageDataVersion, bool avoidCache)
         {
             this.identifier = identifier;
@@ -43,6 +47,22 @@ namespace nl.datm.yuuta.Droid
             this.licenseAgreementWebsite = licenseAgreementWebsite;
             this.imageDataVersion = imageDataVersion;
             this.avoidCache = avoidCache;
+        }
+
+        internal StickerPack(string identifier, string name, string trayImageFile, byte[] trayImage, Dictionary<(string name, string[] emoji), Func<byte[]>> resolveSticker)
+        {
+            this.identifier = identifier;
+            this.name = name;
+            this.publisher = "Jan-Willem de Bruyn";
+            this.trayImageFile = trayImageFile;
+            this.publisherEmail = "a@b.nl";
+            this.publisherWebsite = "datm.nl";
+            this.privacyPolicyWebsite = "datm.nl";
+            this.licenseAgreementWebsite = "datm.nl";
+            this.imageDataVersion = "1";
+            this.avoidCache = false;
+            _resolveSticker = resolveSticker;
+            this.trayImage = trayImage;
         }
 
         void setIsWhitelisted(bool isWhitelisted)
@@ -76,6 +96,9 @@ namespace nl.datm.yuuta.Droid
 
         internal void setStickers(List<Sticker> stickers)
         {
+            if (_resolveSticker != null)
+                return;
+
             this.stickers = stickers;
             totalSize = 0;
             foreach (Sticker sticker in stickers)
@@ -96,6 +119,11 @@ namespace nl.datm.yuuta.Droid
 
         internal List<Sticker> getStickers()
         {
+            if (_resolveSticker != null)
+            {
+                return _resolveSticker.Select(item => new Sticker(item.Key.name, item.Key.emoji.ToList(), item.Value)).ToList();
+            }
+
             return stickers;
         }
 

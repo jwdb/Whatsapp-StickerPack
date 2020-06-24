@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using Android.Content;
 using Android.Content.Res;
 using Android.Database;
 using Android.Text;
 using Java.IO;
+using nl.datm.yuuta.Services;
+using Xamarin.Forms;
 
 namespace nl.datm.yuuta.Droid
 {
-    [ContentProvider(new string[] { "nl.datm.yuuta.stickercontentprovider" },
-        Enabled = true,
-        Exported = true,
-        ReadPermission = "com.whatsapp.sticker.READ")]
+    [ContentProvider(new string[] { "nl.datm.yuuta.stickercontentprovider" }, Enabled = true, Exported = true, ReadPermission = "com.whatsapp.sticker.READ")]
     public class StickerContentProvider : ContentProvider
     {
         public const string CONTENT_PROVIDER_AUTHORITY = "nl.datm.yuuta.stickercontentprovider";
         /**
-   * Do not change the strings listed below, as these are used by WhatsApp. And changing these will break the interface between sticker app and WhatsApp.
-   */
+       * Do not change the strings listed below, as these are used by WhatsApp. And changing these will break the interface between sticker app and WhatsApp.
+       */
         public const string STICKER_PACK_IDENTIFIER_IN_QUERY = "sticker_pack_identifier";
         public const string STICKER_PACK_NAME_IN_QUERY = "sticker_pack_name";
         public const string STICKER_PACK_PUBLISHER_IN_QUERY = "sticker_pack_publisher";
@@ -60,6 +61,7 @@ namespace nl.datm.yuuta.Droid
 
         private List<StickerPack> stickerPackList;
 
+
         public override bool OnCreate()
         {
             string authority = CONTENT_PROVIDER_AUTHORITY;
@@ -77,14 +79,6 @@ namespace nl.datm.yuuta.Droid
             //gets the list of stickers for a sticker pack, * respresent the identifier.
             MATCHER.AddURI(authority, STICKERS + "/*", STICKERS_CODE);
 
-            foreach (StickerPack stickerPack in getStickerPackList())
-            {
-                MATCHER.AddURI(authority, STICKERS_ASSET + "/" + stickerPack.identifier + "/" + stickerPack.trayImageFile, STICKER_PACK_TRAY_ICON_CODE);
-                foreach (Sticker sticker in stickerPack.getStickers())
-                {
-                    MATCHER.AddURI(authority, STICKERS_ASSET + "/" + stickerPack.identifier + "/" + sticker.imageFileName, STICKERS_ASSET_CODE);
-                }
-            }
 
             return true;
         }
@@ -93,7 +87,6 @@ namespace nl.datm.yuuta.Droid
         {
             try
             {
-
                 int code = MATCHER.Match(uri);
                 if (code == METADATA_CODE)
                 {
@@ -128,7 +121,6 @@ namespace nl.datm.yuuta.Droid
             }
             return null;
         }
-
 
         public override string GetType(Android.Net.Uri uri)
         {
@@ -165,9 +157,20 @@ namespace nl.datm.yuuta.Droid
 
         private List<StickerPack> getStickerPackList()
         {
-            if (stickerPackList == null)
+            if (stickerPackList == null && Xamarin.Forms.Forms.IsInitialized)
             {
-                ReadContentFile(Context);
+                var stickerResolver = DependencyService.Get<AddStickerService>().GetStickerResolver();
+                stickerPackList = new List<StickerPack>();
+                stickerPackList.AddRange(stickerResolver?.Select(item => new StickerPack(item.Key.identifier, item.Key.name, item.Key.trayImageFile, item.Key.trayImage, item.Value)));
+
+                foreach (StickerPack stickerPack in getStickerPackList())
+                {
+                    MATCHER.AddURI(CONTENT_PROVIDER_AUTHORITY, STICKERS_ASSET + "/" + stickerPack.identifier + "/" + stickerPack.trayImageFile, STICKER_PACK_TRAY_ICON_CODE);
+                    foreach (Sticker sticker in stickerPack.getStickers())
+                    {
+                        MATCHER.AddURI(CONTENT_PROVIDER_AUTHORITY, STICKERS_ASSET + "/" + stickerPack.identifier + "/" + sticker.imageFileName, STICKERS_ASSET_CODE);
+                    }
+                }
             }
             return stickerPackList;
         }
@@ -255,18 +258,19 @@ namespace nl.datm.yuuta.Droid
             var pathSegments = uri.PathSegments;
             if (pathSegments.Count != 3)
             {
-                throw new Java.Lang.IllegalArgumentException("path segments should be 3, uri is: " + uri);
+                throw new ArgumentException("path segments should be 3, uri is: " + uri);
             }
             var fileName = pathSegments[pathSegments.Count - 1];
             var identifier = pathSegments[pathSegments.Count - 2];
             if (TextUtils.IsEmpty(identifier))
             {
-                throw new Java.Lang.IllegalArgumentException("identifier is empty, uri: " + uri);
+                throw new ArgumentException("identifier is empty, uri: " + uri);
             }
             if (TextUtils.IsEmpty(fileName))
             {
-                throw new Java.Lang.IllegalArgumentException("file name is empty, uri: " + uri);
+                throw new ArgumentException("file name is empty, uri: " + uri);
             }
+
             //making sure the file that is trying to be fetched is in the list of stickers.
             foreach (StickerPack stickerPack in getStickerPackList())
             {
@@ -274,7 +278,24 @@ namespace nl.datm.yuuta.Droid
                 {
                     if (fileName.Equals(stickerPack.trayImageFile))
                     {
-                        return FetchFile(uri, am, fileName, identifier);
+                        if (stickerPack.trayImage != null)
+                        {
+                            File cacheFile = Context.GetExternalCacheDirs().FirstOrDefault();
+                            File file = new File(cacheFile, fileName);
+                            try
+                            {
+                                FileOutputStream fileOutputStream = new FileOutputStream(file);
+                                fileOutputStream.Write(stickerPack.trayImage);
+
+                                return new AssetFileDescriptor(Android.OS.ParcelFileDescriptor.Open(file, Android.OS.ParcelFileMode.ReadOnly), 0, AssetFileDescriptor.UnknownLength);
+                            }
+                            catch (Exception e)
+                            {
+                                throw;
+                            }
+                        }
+
+                        return FetchFile(am, fileName, identifier);
                     }
                     else
                     {
@@ -282,7 +303,23 @@ namespace nl.datm.yuuta.Droid
                         {
                             if (fileName.Equals(sticker.imageFileName))
                             {
-                                return FetchFile(uri, am, fileName, identifier);
+                                if (sticker.loader != null)
+                                {
+                                    File cacheFile = Context.GetExternalCacheDirs().FirstOrDefault();
+                                    File file = new File(cacheFile, fileName);
+                                    try
+                                    {
+                                        FileOutputStream fileOutputStream = new FileOutputStream(file);
+                                        fileOutputStream.Write(sticker.loader?.Invoke());
+
+                                        return new AssetFileDescriptor(Android.OS.ParcelFileDescriptor.Open(file, Android.OS.ParcelFileMode.ReadOnly), 0, AssetFileDescriptor.UnknownLength);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        throw;
+                                    }
+                                }
+                                return FetchFile(am, fileName, identifier);
                             }
                         }
                     }
@@ -291,7 +328,7 @@ namespace nl.datm.yuuta.Droid
             return null;
         }
 
-        private AssetFileDescriptor FetchFile(Android.Net.Uri uri, AssetManager am, string fileName, string identifier)
+        private AssetFileDescriptor FetchFile(AssetManager am, string fileName, string identifier)
         {
             try
             {
@@ -299,24 +336,23 @@ namespace nl.datm.yuuta.Droid
             }
             catch (Exception e)
             {
-                //Log.e(Objects.requireNonNull(Context).getPackageName(), "IOException when getting asset file, uri:" + uri, e);
                 return null;
             }
         }
 
         public override int Delete(Android.Net.Uri uri, string selection, string[] selectionArgs)
         {
-            throw new Java.Lang.UnsupportedOperationException("Not supported");
+            throw new NotImplementedException("Not supported");
         }
 
         public override Android.Net.Uri Insert(Android.Net.Uri uri, ContentValues values)
         {
-            throw new Java.Lang.UnsupportedOperationException("Not supported");
+            throw new NotImplementedException("Not supported");
         }
 
         public override int Update(Android.Net.Uri uri, ContentValues values, string selection, string[] selectionArgs)
         {
-            throw new Java.Lang.UnsupportedOperationException("Not supported");
+            throw new NotImplementedException("Not supported");
         }
     }
 }

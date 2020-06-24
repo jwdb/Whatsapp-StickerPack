@@ -58,6 +58,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.3</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="4.5.0.495" />
     <PackageReference Include="Xamarin.Essentials" Version="1.3.1" />
   </ItemGroup>
@@ -73,32 +76,6 @@
     <Compile Include="WhitelistCheck.cs" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\contents.json" />
-    <AndroidAsset Include="Assets\1\01_Cuppy_smile.webp" />
-    <AndroidAsset Include="Assets\1\02_Cuppy_lol.webp" />
-    <AndroidAsset Include="Assets\1\03_Cuppy_rofl.webp" />
-    <AndroidAsset Include="Assets\1\04_Cuppy_sad.webp" />
-    <AndroidAsset Include="Assets\1\05_Cuppy_cry.webp" />
-    <AndroidAsset Include="Assets\1\06_Cuppy_love.webp" />
-    <AndroidAsset Include="Assets\1\07_Cuppy_hate.webp" />
-    <AndroidAsset Include="Assets\1\08_Cuppy_lovewithmug.webp" />
-    <AndroidAsset Include="Assets\1\09_Cuppy_lovewithcookie.webp" />
-    <AndroidAsset Include="Assets\1\10_Cuppy_hmm.webp" />
-    <AndroidAsset Include="Assets\1\11_Cuppy_upset.webp" />
-    <AndroidAsset Include="Assets\1\12_Cuppy_angry.webp" />
-    <AndroidAsset Include="Assets\1\13_Cuppy_curious.webp" />
-    <AndroidAsset Include="Assets\1\14_Cuppy_weird.webp" />
-    <AndroidAsset Include="Assets\1\15_Cuppy_bluescreen.webp" />
-    <AndroidAsset Include="Assets\1\16_Cuppy_angry.webp" />
-    <AndroidAsset Include="Assets\1\17_Cuppy_tired.webp" />
-    <AndroidAsset Include="Assets\1\18_Cuppy_workhard.webp" />
-    <AndroidAsset Include="Assets\1\19_Cuppy_shine.webp" />
-    <AndroidAsset Include="Assets\1\20_Cuppy_disgusting.webp" />
-    <AndroidAsset Include="Assets\1\21_Cuppy_hi.webp" />
-    <AndroidAsset Include="Assets\1\22_Cuppy_bye.webp" />
-    <AndroidAsset Include="Assets\1\23_Cuppy_greentea.webp" />
-    <AndroidAsset Include="Assets\1\24_Cuppy_phone.webp" />
-    <AndroidAsset Include="Assets\1\25_Cuppy_battery.webp" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="Properties\AndroidManifest.xml" />
@@ -127,9 +104,6 @@
       <Project>{3C892A35-04F2-4EAB-942F-C01701CD09EE}</Project>
       <Name>nl.datm.yuuta</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\1\tray_Cuppy.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

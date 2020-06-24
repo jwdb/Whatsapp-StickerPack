@@ -18,10 +18,19 @@ namespace nl.datm.yuuta.Droid
         internal List<String> emojis;
         internal long size;
 
+        public Func<byte[]> loader { get; set; }
+
         internal Sticker(String imageFileName, List<String> emojis)
         {
             this.imageFileName = imageFileName;
             this.emojis = emojis;
+        }
+
+        internal Sticker(String imageFileName, List<String> emojis, Func<byte[]> loader)
+        {
+            this.imageFileName = imageFileName;
+            this.emojis = emojis;
+            this.loader = loader;
         }
 
         private Sticker(Parcel inparcel)
