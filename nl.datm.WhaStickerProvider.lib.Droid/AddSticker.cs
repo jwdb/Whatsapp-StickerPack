@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using Android.Content;
 using Android.Widget;
-using nl.datm.yuuta.Droid;
-using nl.datm.yuuta.Services;
+using nl.datm.WhaStickerProvider.lib.Droid;
+using nl.datm.WhaStickerProvider.lib.Models;
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(AddSticker))]
-namespace nl.datm.yuuta.Droid
+namespace nl.datm.WhaStickerProvider.lib.Droid
 {
     public class AddSticker : AddStickerService
     {
@@ -17,19 +17,19 @@ namespace nl.datm.yuuta.Droid
         private Context _context;
 
 
-        public Dictionary<(string identifier, string name, string trayImageFile, byte[] trayImage), Dictionary<(string name, string[] emoji), Func<byte[]>>> StickerResolver { get; set; }
+        public List<StickerPack> StickerResolver { get; set; }
 
         public AddSticker()
         {
             _context = Android.App.Application.Context;
         }
 
-        public void SetStickerResolver(Dictionary<(string identifier, string name, string trayImageFile, byte[] trayImage), Dictionary<(string name, string[] emoji), Func<byte[]>>> stickerResolver)
+        public void SetStickerResolver(List<StickerPack> stickerResolver)
         {
             StickerResolver = stickerResolver;
         }
 
-        public Dictionary<(string identifier, string name, string trayImageFile, byte[] trayImage), Dictionary<(string name, string[] emoji), Func<byte[]>>> GetStickerResolver()
+        public List<StickerPack> GetStickerResolver()
         {
             return StickerResolver;
         }
